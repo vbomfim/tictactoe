@@ -1,0 +1,475 @@
+/*
+ * Tic Tac Toe — Playful & Colorful Theme
+ * Vibrant, game-like, fun for all ages. [CUSTOM]
+ */
+
+/* ========= CSS Custom Properties ========= */
+:root {
+    /* Light theme (default) */
+    --bg-primary: #f0e6ff;
+    --bg-secondary: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-primary: #2d1b69;
+    --text-secondary: #5a4a8a;
+    --board-bg: #ffffff;
+    --cell-bg: #f8f4ff;
+    --cell-hover: #ede4ff;
+    --cell-border: #d4c4f0;
+    --color-x: #ff6b6b;
+    --color-o: #4ecdc4;
+    --color-x-glow: rgba(255, 107, 107, 0.3);
+    --color-o-glow: rgba(78, 205, 196, 0.3);
+    --win-line: #ffd93d;
+    --btn-primary: #667eea;
+    --btn-primary-hover: #5a6fd6;
+    --btn-text: #ffffff;
+    --btn-secondary: #f0e6ff;
+    --btn-secondary-hover: #e0d0ff;
+    --btn-secondary-text: #5a4a8a;
+    --card-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+    --score-bg: #f8f4ff;
+    --select-bg: #f8f4ff;
+    --select-border: #d4c4f0;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --text-primary: #e8e0ff;
+    --text-secondary: #b8a8d8;
+    --board-bg: #1e2a4a;
+    --cell-bg: #253255;
+    --cell-hover: #2d3d66;
+    --cell-border: #3d4f77;
+    --color-x: #ff8a8a;
+    --color-o: #6ee7de;
+    --color-x-glow: rgba(255, 138, 138, 0.25);
+    --color-o-glow: rgba(110, 231, 222, 0.25);
+    --win-line: #ffd93d;
+    --btn-primary: #7c8cf5;
+    --btn-primary-hover: #6b7ce8;
+    --btn-text: #ffffff;
+    --btn-secondary: #253255;
+    --btn-secondary-hover: #2d3d66;
+    --btn-secondary-text: #b8a8d8;
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --score-bg: #253255;
+    --select-bg: #253255;
+    --select-border: #3d4f77;
+}
+
+/* ========= Base Reset ========= */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ========= Layout ========= */
+.game-container {
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--card-shadow);
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ========= Header ========= */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-x), var(--color-o));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.btn-theme {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--btn-secondary);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-theme:hover {
+    background: var(--btn-secondary-hover);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* ========= Status Message ========= */
+.status {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 12px 0 16px;
+    min-height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+/* ========= Board ========= */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 6px;
+    background: var(--cell-border);
+    border-radius: 16px;
+    position: relative;
+    margin: 0 auto 20px;
+    max-width: 312px;
+    aspect-ratio: 1;
+}
+
+.cell {
+    background: var(--cell-bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 2.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    aspect-ratio: 1;
+    position: relative;
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cell:hover:not(.disabled):not(:disabled) {
+    background: var(--cell-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cell:focus-visible {
+    outline: 3px solid var(--btn-primary);
+    outline-offset: 2px;
+}
+
+.cell-x {
+    color: var(--color-x);
+    text-shadow: 0 0 20px var(--color-x-glow);
+    animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cell-o {
+    color: var(--color-o);
+    text-shadow: 0 0 20px var(--color-o-glow);
+    animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cell.disabled {
+    cursor: default;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ========= Win Line SVG Overlay ========= */
+.win-line-svg {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.win-line {
+    stroke: var(--win-line);
+    stroke-width: 8;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 8px rgba(255, 217, 61, 0.6));
+    stroke-dasharray: 450;
+    stroke-dashoffset: 450;
+    animation: drawLine 0.5s ease forwards;
+}
+
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+.draw-v {
+    fill: none;
+    stroke: var(--win-line);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(255, 217, 61, 0.6));
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawV 0.8s ease-in-out forwards;
+}
+
+@keyframes drawV {
+    to { stroke-dashoffset: 0; }
+}
+
+/* ========= Scoreboard ========= */
+.scoreboard {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.score-card {
+    background: var(--score-bg);
+    border-radius: 12px;
+    padding: 10px 20px;
+    min-width: 80px;
+    transition: background 0.3s ease;
+}
+
+.score-card .label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.score-card .value {
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+.score-card.x-score .label { color: var(--color-x); }
+.score-card.x-score .value { color: var(--color-x); }
+.score-card.o-score .label { color: var(--color-o); }
+.score-card.o-score .value { color: var(--color-o); }
+.score-card.draw-score .label { color: var(--text-secondary); }
+.score-card.draw-score .value { color: var(--text-secondary); }
+
+/* ========= Controls ========= */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.control-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background: var(--btn-primary);
+    color: var(--btn-text);
+}
+
+.btn-primary:hover {
+    background: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary);
+    color: var(--btn-secondary-text);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+.btn:focus-visible {
+    outline: 3px solid var(--btn-primary);
+    outline-offset: 2px;
+}
+
+/* ========= Select Dropdowns ========= */
+.game-select {
+    padding: 8px 12px;
+    border: 2px solid var(--select-border);
+    border-radius: 10px;
+    background: var(--select-bg);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    /* Custom dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235a4a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 32px;
+}
+
+.game-select:focus-visible {
+    outline: 3px solid var(--btn-primary);
+    outline-offset: 2px;
+}
+
+[data-theme="dark"] .game-select {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23b8a8d8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* PvE options row */
+.pve-options {
+    display: none;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pve-options label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ========= Accessibility ========= */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ========= Responsive — Mobile ========= */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+        justify-content: flex-start;
+        padding-top: 16px;
+    }
+
+    .game-container {
+        padding: 20px 16px;
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .status {
+        font-size: 1.1rem;
+        margin: 8px 0 12px;
+    }
+
+    .cell {
+        font-size: 2.2rem;
+    }
+
+    .scoreboard {
+        gap: 8px;
+    }
+
+    .score-card {
+        padding: 8px 14px;
+        min-width: 70px;
+    }
+
+    .score-card .value {
+        font-size: 1.3rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
+    .control-row {
+        gap: 6px;
+    }
+}
+
+/* ========= Animations for fun! ========= */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ========= Reduced Motion ========= */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
