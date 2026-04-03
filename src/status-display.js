@@ -51,11 +51,11 @@ TicTacToe.StatusDisplay = (function () {
         } else {
             message = 'Player ' + state.currentPlayer + '\'s Turn';
 
-            // In PvE, clarify who is the human
+            // In PvE, clarify who is the human vs AI
             if (state.gameMode === 'pve') {
-                var isHumanTurn = state.currentPlayer === state.humanSide;
+                var isHumanTurn = state.currentPlayer === 'X';
                 message = isHumanTurn
-                    ? '🎮 Your Turn (' + state.currentPlayer + ')'
+                    ? '🎮 Your Turn (X)'
                     : '🤖 AI is thinking...';
             }
         }

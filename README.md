@@ -86,4 +86,4 @@ Components communicate via the observer pattern: `GameState` notifies `BoardRend
 | `ttt-theme` | Theme preference |
 | `ttt-game-mode` | Last selected game mode |
 | `ttt-difficulty` | Last selected difficulty |
-| `ttt-human-side` | Last selected side |
+| `ttt-ai-first` | Who goes first (AI or human) |

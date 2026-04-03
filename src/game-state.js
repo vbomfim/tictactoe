@@ -25,7 +25,7 @@ TicTacToe.GameState = (function () {
             scores: { X: 0, O: 0, draws: 0 },
             gameMode: 'pvp',        // 'pvp' | 'pve'
             difficulty: 'medium',   // 'easy' | 'medium' | 'hard'
-            humanSide: 'X',         // 'X' | 'O'
+            aiGoesFirst: false,     // true = AI (O) moves first; human is always X, AI is always O
             theme: 'light'          // 'light' | 'dark'
         };
     }
@@ -49,7 +49,7 @@ TicTacToe.GameState = (function () {
             },
             gameMode: this._state.gameMode,
             difficulty: this._state.difficulty,
-            humanSide: this._state.humanSide,
+            aiGoesFirst: this._state.aiGoesFirst,
             theme: this._state.theme
         };
     };
@@ -128,9 +128,9 @@ TicTacToe.GameState = (function () {
         this._notify();
     };
 
-    /** Set which side the human plays in PvE ('X' | 'O'). */
-    GameState.prototype.setHumanSide = function (side) {
-        this._state.humanSide = side;
+    /** Set whether the AI goes first in PvE mode. */
+    GameState.prototype.setAiGoesFirst = function (value) {
+        this._state.aiGoesFirst = !!value;
         this._notify();
     };
 

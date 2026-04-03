@@ -17,7 +17,7 @@ TicTacToe.GameController = (function () {
         SCORES: 'ttt-scores',
         MODE: 'ttt-game-mode',
         DIFFICULTY: 'ttt-difficulty',
-        SIDE: 'ttt-human-side'
+        SIDE: 'ttt-ai-first'
     };
 
     /**
@@ -40,7 +40,7 @@ TicTacToe.GameController = (function () {
         var themeToggleBtn = document.getElementById('btn-theme');
         var modeSelect = document.getElementById('select-mode');
         var difficultySelect = document.getElementById('select-difficulty');
-        var sideSelect = document.getElementById('select-side');
+        var sideSelect = document.getElementById('select-first');
         var pveOptions = document.getElementById('pve-options');
 
         // Init renderers
@@ -69,7 +69,7 @@ TicTacToe.GameController = (function () {
         // Apply settings to UI
         modeSelect.value = gameState.getState().gameMode;
         difficultySelect.value = gameState.getState().difficulty;
-        sideSelect.value = gameState.getState().humanSide;
+        sideSelect.value = gameState.getState().aiGoesFirst ? 'computer' : 'human';
         togglePveOptions(gameState.getState().gameMode);
 
         // Subscribe renderers to state changes
@@ -118,11 +118,11 @@ TicTacToe.GameController = (function () {
             persistSetting(KEYS.DIFFICULTY, diff);
         });
 
-        // Side select
+        // "Who goes first?" select
         sideSelect.addEventListener('change', function () {
-            var side = sideSelect.value;
-            gameState.setHumanSide(side);
-            persistSetting(KEYS.SIDE, side);
+            var aiFirst = sideSelect.value === 'computer';
+            gameState.setAiGoesFirst(aiFirst);
+            persistSetting(KEYS.SIDE, aiFirst ? 'true' : 'false');
             _aiThinking = false;
             gameState.resetBoard();
             triggerAiFirstMove();
@@ -147,8 +147,8 @@ TicTacToe.GameController = (function () {
 
         var state = gameState.getState();
 
-        // In PvE, ignore clicks on AI's turn
-        if (state.gameMode === 'pve' && state.currentPlayer !== state.humanSide) return;
+        // In PvE, ignore clicks on AI's turn (AI is always 'O')
+        if (state.gameMode === 'pve' && state.currentPlayer === 'O') return;
 
         var accepted = gameState.makeMove(index);
         if (!accepted) return;
@@ -176,8 +176,8 @@ TicTacToe.GameController = (function () {
                 _aiThinking = false;
                 return;
             }
-            var aiSide = state.humanSide === 'X' ? 'O' : 'X';
-            var move = aiPlayer.getMove(state.board, state.difficulty, aiSide);
+            // AI is always 'O' [BUG FIX — human always X, AI always O]
+            var move = aiPlayer.getMove(state.board, state.difficulty, 'O');
             gameState.makeMove(move);
             saveScores();
             _aiThinking = false;
@@ -185,11 +185,12 @@ TicTacToe.GameController = (function () {
     }
 
     /**
-     * If in PvE and AI should go first (human is O), trigger the AI. [ADDITIONAL AC]
+     * If in PvE and AI goes first, trigger the AI move. [BUG FIX]
+     * AI is always O, so when aiGoesFirst is true, AI places O first.
      */
     function triggerAiFirstMove() {
         var state = gameState.getState();
-        if (state.gameMode === 'pve' && state.humanSide === 'O' && state.gameStatus === 'playing') {
+        if (state.gameMode === 'pve' && state.aiGoesFirst && state.gameStatus === 'playing') {
             scheduleAiMove();
         }
     }
@@ -230,8 +231,8 @@ TicTacToe.GameController = (function () {
         } catch (e) { /* ignore */ }
 
         try {
-            var side = localStorage.getItem(KEYS.SIDE);
-            if (side === 'X' || side === 'O') gameState.setHumanSide(side);
+            var aiFirst = localStorage.getItem(KEYS.SIDE);
+            if (aiFirst === 'true') gameState.setAiGoesFirst(true);
         } catch (e) { /* ignore */ }
     }
 

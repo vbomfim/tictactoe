@@ -185,7 +185,7 @@
         });
     });
 
-    TicTacTest.describe('GameState — setGameMode / setDifficulty / setHumanSide', function (ctx) {
+    TicTacTest.describe('GameState — setGameMode / setDifficulty / setAiGoesFirst', function (ctx) {
 
         ctx.it('changes game mode', function () {
             var gs = freshState();
@@ -199,10 +199,22 @@
             assert.equal(gs.getState().difficulty, 'hard');
         });
 
-        ctx.it('changes human side', function () {
+        ctx.it('defaults aiGoesFirst to false', function () {
             var gs = freshState();
-            gs.setHumanSide('O');
-            assert.equal(gs.getState().humanSide, 'O');
+            assert.isFalse(gs.getState().aiGoesFirst, 'should default to false');
+        });
+
+        ctx.it('sets aiGoesFirst to true', function () {
+            var gs = freshState();
+            gs.setAiGoesFirst(true);
+            assert.isTrue(gs.getState().aiGoesFirst);
+        });
+
+        ctx.it('sets aiGoesFirst to false', function () {
+            var gs = freshState();
+            gs.setAiGoesFirst(true);
+            gs.setAiGoesFirst(false);
+            assert.isFalse(gs.getState().aiGoesFirst);
         });
     });
 
