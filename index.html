@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- System font stack — no CDN required, works offline [AC20] -->
+</head>
+<body>
+
+    <div class="game-container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">Tic Tac Toe</h1>
+            <button id="btn-theme" class="btn-theme" aria-label="Switch to dark mode">🌙</button>
+        </div>
+
+        <!-- Status Message -->
+        <div id="status" class="status" aria-live="polite">Player X's Turn</div>
+
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+            <div class="score-card x-score">
+                <div class="label">X Wins</div>
+                <div id="score-x" class="value">0</div>
+            </div>
+            <div class="score-card draw-score">
+                <div class="label">Draws</div>
+                <div id="score-draw" class="value">0</div>
+            </div>
+            <div class="score-card o-score">
+                <div class="label">O Wins</div>
+                <div id="score-o" class="value">0</div>
+            </div>
+        </div>
+
+        <!-- Board -->
+        <div id="board" class="board" role="grid" aria-label="Tic Tac Toe board">
+            <!-- 9 cells injected by BoardRenderer -->
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="control-row">
+                <button id="btn-new-game" class="btn btn-primary">🔄 New Game</button>
+                <button id="btn-reset-scores" class="btn btn-secondary">🗑️ Reset Scores</button>
+            </div>
+            <div class="control-row">
+                <label for="select-mode" class="sr-only">Game Mode</label>
+                <select id="select-mode" class="game-select" aria-label="Game Mode">
+                    <option value="pvp">👫 Player vs Player</option>
+                    <option value="pve">🤖 Player vs AI</option>
+                </select>
+            </div>
+            <div id="pve-options" class="control-row pve-options">
+                <label for="select-difficulty">Difficulty:</label>
+                <select id="select-difficulty" class="game-select" aria-label="AI Difficulty">
+                    <option value="easy">😊 Easy</option>
+                    <option value="medium" selected>🤔 Medium</option>
+                    <option value="hard">😈 Hard</option>
+                </select>
+                <label for="select-side">Play as:</label>
+                <select id="select-side" class="game-select" aria-label="Choose your side">
+                    <option value="X">❌ X (go first)</option>
+                    <option value="O">⭕ O (AI goes first)</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Screen reader announcements (hidden) -->
+    <div id="announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+    <!-- Scripts in dependency order (NOT ES modules — works via file://) -->
+    <script src="src/game-logic.js"></script>
+    <script src="src/ai-player.js"></script>
+    <script src="src/game-state.js"></script>
+    <script src="src/board-renderer.js"></script>
+    <script src="src/status-display.js"></script>
+    <script src="src/theme-manager.js"></script>
+    <script src="src/game-controller.js"></script>
+    <script>
+        // Boot the game when DOM is ready [CLEAN-CODE — single entry point]
+        document.addEventListener('DOMContentLoaded', function () {
+            TicTacToe.GameController.init();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe — Test Suite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; padding: 24px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; margin-bottom: 16px; }
+        .suite { margin: 16px 0; padding: 12px; border-radius: 8px; background: #16213e; }
+        .suite-name { font-size: 1.1em; font-weight: bold; color: #e0e0e0; margin-bottom: 8px; }
+        .test { padding: 4px 12px; font-size: 0.95em; }
+        .test.pass { color: #4caf50; }
+        .test.fail { color: #ff5252; font-weight: bold; }
+        .test.fail .detail { display: block; color: #ff8a80; font-size: 0.85em; margin-top: 2px; padding-left: 16px; white-space: pre-wrap; }
+        .summary { margin-top: 24px; padding: 16px; border-radius: 8px; font-size: 1.2em; font-weight: bold; }
+        .summary.all-pass { background: #1b5e20; color: #a5d6a7; }
+        .summary.has-fail { background: #b71c1c; color: #ef9a9a; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Tic Tac Toe — Test Suite</h1>
+    <div id="results"></div>
+    <div id="summary"></div>
+
+    <!-- Source files in dependency order -->
+    <script src="../src/game-logic.js"></script>
+    <script src="../src/ai-player.js"></script>
+    <script src="../src/game-state.js"></script>
+    <script src="../src/theme-manager.js"></script>
+    <script src="../src/board-renderer.js"></script>
+    <script src="../src/status-display.js"></script>
+    <script src="../src/game-controller.js"></script>
+
+    <!-- Test framework (minimal, zero-dep) -->
+    <script src="test-framework.js"></script>
+
+    <!-- Test suites -->
+    <script src="game-logic.test.js"></script>
+    <script src="ai-player.test.js"></script>
+    <script src="game-state.test.js"></script>
+
+    <!-- Run -->
+    <script>
+        TicTacTest.run();
+    </script>
+</body>
+</html>
