@@ -101,7 +101,9 @@ TicTacToe.GameState = (function () {
      */
     GameState.prototype.resetBoard = function () {
         this._state.board = [null, null, null, null, null, null, null, null, null];
-        this._state.currentPlayer = 'X';
+        // AI is always O — if AI goes first in PvE, O starts
+        this._state.currentPlayer =
+            (this._state.gameMode === 'pve' && this._state.aiGoesFirst) ? 'O' : 'X';
         this._state.gameStatus = 'playing';
         this._state.winner = null;
         this._state.winLine = null;

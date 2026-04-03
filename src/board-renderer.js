@@ -128,10 +128,24 @@ TicTacToe.BoardRenderer = (function () {
         _svgOverlay.appendChild(lineEl);
     }
 
+    /**
+     * Draw a handwriting-style V across the board on a draw result.
+     */
+    function drawDrawV() {
+        _svgOverlay.innerHTML = '';
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        // V shape: top-left → bottom-center → top-right
+        path.setAttribute('d', 'M 30 40 L 156 275 L 282 40');
+        path.setAttribute('class', 'draw-v');
+        _svgOverlay.appendChild(path);
+    }
+
     return {
         init: init,
         onCellClick: onCellClick,
         render: render,
-        drawWinLine: drawWinLine
+        drawWinLine: drawWinLine,
+        drawDrawV: drawDrawV
     };
 })();

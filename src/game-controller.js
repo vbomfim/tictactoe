@@ -78,6 +78,8 @@ TicTacToe.GameController = (function () {
             statusDisplay.render(state);
             if (state.winLine) {
                 boardRenderer.drawWinLine(state.winLine);
+            } else if (state.gameStatus === 'draw') {
+                boardRenderer.drawDrawV();
             }
         });
 
@@ -129,6 +131,7 @@ TicTacToe.GameController = (function () {
         });
 
         // Initial render
+        gameState.resetBoard();
         var initState = gameState.getState();
         boardRenderer.render(initState);
         statusDisplay.render(initState);

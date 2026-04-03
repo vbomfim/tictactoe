@@ -239,6 +239,22 @@ body {
     to { stroke-dashoffset: 0; }
 }
 
+.draw-v {
+    fill: none;
+    stroke: var(--win-line);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(255, 217, 61, 0.6));
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawV 0.8s ease-in-out forwards;
+}
+
+@keyframes drawV {
+    to { stroke-dashoffset: 0; }
+}
+
 /* ========= Scoreboard ========= */
 .scoreboard {
     display: flex;
