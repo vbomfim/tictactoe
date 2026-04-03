@@ -23,7 +23,7 @@ TicTacToe.BoardRenderer = (function () {
         _boardEl = boardContainer;
         _boardEl.setAttribute('role', 'grid');
         _boardEl.setAttribute('aria-label', 'Tic Tac Toe board');
-        _boardEl.innerHTML = '';
+        _boardEl.replaceChildren();
         _cells = [];
 
         // Create 9 cells
@@ -49,6 +49,26 @@ TicTacToe.BoardRenderer = (function () {
         _svgOverlay.setAttribute('viewBox', '0 0 312 312');
         _svgOverlay.setAttribute('aria-hidden', 'true');
         _boardEl.appendChild(_svgOverlay);
+
+        // Arrow key navigation for grid role [WCAG]
+        _boardEl.addEventListener('keydown', function (e) {
+            var index = _cells.indexOf(document.activeElement);
+            if (index === -1) return;
+            var row = Math.floor(index / 3);
+            var col = index % 3;
+            var next = -1;
+            switch (e.key) {
+                case 'ArrowUp':    if (row > 0) next = index - 3; break;
+                case 'ArrowDown':  if (row < 2) next = index + 3; break;
+                case 'ArrowLeft':  if (col > 0) next = index - 1; break;
+                case 'ArrowRight': if (col < 2) next = index + 1; break;
+                default: return;
+            }
+            if (next >= 0 && next < 9) {
+                e.preventDefault();
+                _cells[next].focus();
+            }
+        });
     }
 
     /**
@@ -89,7 +109,7 @@ TicTacToe.BoardRenderer = (function () {
 
         // Clear winning line if no winLine
         if (!state.winLine) {
-            _svgOverlay.innerHTML = '';
+            _svgOverlay.replaceChildren();
         }
     }
 
@@ -101,7 +121,7 @@ TicTacToe.BoardRenderer = (function () {
     function drawWinLine(line) {
         if (!line || line.length !== 3) return;
 
-        _svgOverlay.innerHTML = '';
+        _svgOverlay.replaceChildren();
 
         // Calculate cell centers (assuming 100px cells + 6px gap in a 312px grid)
         var cellSize = 100;
@@ -132,7 +152,7 @@ TicTacToe.BoardRenderer = (function () {
      * Draw a handwriting-style V across the board on a draw result.
      */
     function drawDrawV() {
-        _svgOverlay.innerHTML = '';
+        _svgOverlay.replaceChildren();
 
         var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         // V shape: top-left → bottom-center → top-right

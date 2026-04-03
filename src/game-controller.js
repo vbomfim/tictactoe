@@ -11,6 +11,7 @@ TicTacToe.GameController = (function () {
 
     var gameState, boardRenderer, statusDisplay, themeManager, aiPlayer, logic;
     var _aiThinking = false;
+    var _aiTimeoutId = null;
 
     /** localStorage keys */
     var KEYS = {
@@ -90,6 +91,7 @@ TicTacToe.GameController = (function () {
 
         // Button handlers
         newGameBtn.addEventListener('click', function () {
+            clearTimeout(_aiTimeoutId);
             _aiThinking = false;
             gameState.resetBoard();
             saveScores();
@@ -107,6 +109,7 @@ TicTacToe.GameController = (function () {
             gameState.setGameMode(mode);
             togglePveOptions(mode);
             persistSetting(KEYS.MODE, mode);
+            clearTimeout(_aiTimeoutId);
             _aiThinking = false;
             gameState.resetBoard();
             saveScores();
@@ -125,6 +128,7 @@ TicTacToe.GameController = (function () {
             var aiFirst = sideSelect.value === 'computer';
             gameState.setAiGoesFirst(aiFirst);
             persistSetting(KEYS.SIDE, aiFirst ? 'true' : 'false');
+            clearTimeout(_aiTimeoutId);
             _aiThinking = false;
             gameState.resetBoard();
             triggerAiFirstMove();
@@ -173,7 +177,7 @@ TicTacToe.GameController = (function () {
         _aiThinking = true;
         var delay = 400 + Math.floor(Math.random() * 200);
 
-        setTimeout(function () {
+        _aiTimeoutId = setTimeout(function () {
             var state = gameState.getState();
             if (state.gameStatus !== 'playing') {
                 _aiThinking = false;
@@ -211,15 +215,7 @@ TicTacToe.GameController = (function () {
         try {
             var savedScores = localStorage.getItem(KEYS.SCORES);
             if (savedScores) {
-                var scores = JSON.parse(savedScores);
-                // Directly set scores on the internal state via multiple wins
-                // Instead, we'll use a direct approach:
-                gameState._restoreScores = function (s) {
-                    this._state.scores = s;
-                };
-                if (gameState._restoreScores) {
-                    gameState._restoreScores(scores);
-                }
+                gameState.restoreScores(JSON.parse(savedScores));
             }
         } catch (e) { /* ignore corrupt data */ }
 

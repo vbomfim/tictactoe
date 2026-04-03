@@ -86,8 +86,17 @@ var TicTacTest = {
 // Make TicTacTest available in vm context
 global.TicTacTest = TicTacTest;
 
-// Load test files
-var testOrder = ['game-logic.test.js', 'ai-player.test.js', 'game-state.test.js'];
+// Load test files (originals + QA Guardian additions)
+var testOrder = [
+    'game-logic.test.js',
+    'ai-player.test.js',
+    'game-state.test.js',
+    'integration.test.js',
+    'edge-cases.test.js',
+    'contract.test.js',
+    'performance.test.js',
+    'accessibility-audit.test.js'
+];
 testOrder.forEach(function (f) {
     var code = fs.readFileSync(path.join(ROOT, 'tests', f), 'utf-8');
     vm.runInThisContext(code, { filename: 'tests/' + f });

@@ -36,10 +36,17 @@
     <!-- Test framework (minimal, zero-dep) -->
     <script src="test-framework.js"></script>
 
-    <!-- Test suites -->
+    <!-- Test suites (Developer Guardian — unit tests) -->
     <script src="game-logic.test.js"></script>
     <script src="ai-player.test.js"></script>
     <script src="game-state.test.js"></script>
+
+    <!-- QA Guardian — integration, edge, contract, performance tests -->
+    <script src="integration.test.js"></script>
+    <script src="edge-cases.test.js"></script>
+    <script src="contract.test.js"></script>
+    <script src="performance.test.js"></script>
+    <!-- Note: accessibility-audit.test.js is Node-only (reads source files) -->
 
     <!-- Run -->
     <script>

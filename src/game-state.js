@@ -65,6 +65,9 @@ TicTacToe.GameState = (function () {
         // Guard: game already over [CLEAN-CODE — fail fast]
         if (this._state.gameStatus !== 'playing') return false;
 
+        // Guard: bounds check
+        if (cellIndex < 0 || cellIndex > 8) return false;
+
         // Guard: cell occupied
         if (this._state.board[cellIndex] !== null) return false;
 
@@ -143,11 +146,32 @@ TicTacToe.GameState = (function () {
     };
 
     /**
+     * Restore scores from external source (e.g. localStorage).
+     * Validates input — only accepts finite non-negative integers.
+     * @param {Object} scores - { X: number, O: number, draws: number }
+     */
+    GameState.prototype.restoreScores = function (scores) {
+        if (!scores || typeof scores !== 'object') return;
+        var validated = { X: 0, O: 0, draws: 0 };
+        ['X', 'O', 'draws'].forEach(function (key) {
+            var val = parseInt(scores[key], 10);
+            if (isFinite(val) && val >= 0) validated[key] = val;
+        });
+        this._state.scores = validated;
+        this._notify();
+    };
+
+    /**
      * Subscribe a callback to state changes.
      * @param {function} callback - Called with no args on every state change
      */
     GameState.prototype.subscribe = function (callback) {
         this._subscribers.push(callback);
+        var subscribers = this._subscribers;
+        return function unsubscribe() {
+            var idx = subscribers.indexOf(callback);
+            if (idx > -1) subscribers.splice(idx, 1);
+        };
     };
 
     /** Notify all subscribers of a state change. */

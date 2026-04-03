@@ -26,7 +26,14 @@ TicTacToe.ThemeManager = (function () {
 
         var saved = null;
         try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
-        var theme = (saved === 'dark') ? 'dark' : 'light';
+        var theme;
+        if (saved === 'dark' || saved === 'light') {
+            theme = saved;
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+        } else {
+            theme = 'light';
+        }
         applyTheme(theme);
 
         _toggleBtn.addEventListener('click', function () {

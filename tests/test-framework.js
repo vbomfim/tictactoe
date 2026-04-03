@@ -136,7 +136,11 @@ var TicTacTest = (function () {
                     totalPass++;
                 } catch (err) {
                     testDiv.classList.add('fail');
-                    testDiv.innerHTML = '❌ ' + test.name + '<span class="detail">' + err.message + '</span>';
+                    testDiv.textContent = '❌ ' + test.name + ' ';
+                    var detail = document.createElement('span');
+                    detail.className = 'detail';
+                    detail.textContent = err.message;
+                    testDiv.appendChild(detail);
                     totalFail++;
                 }
                 suiteDiv.appendChild(testDiv);
